@@ -24,6 +24,12 @@ func main() {
 	}
 
 	for _, file := range files {
+		if !strings.HasSuffix(file.Name(), ".png") &&
+			!strings.HasSuffix(file.Name(), ".gif") {
+			fmt.Printf("Skip file %s, unsupported format\n", file.Name())
+			continue
+		}
+
 		infile, err := os.Open(filepath.Join(inputDir, file.Name()))
 		if err != nil {
 			fmt.Printf("Open file %s error：%s\n", file.Name(), err)
