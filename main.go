@@ -2,6 +2,11 @@ package main
 
 import (
 	"fmt"
+	"image"
+	_ "image/gif"
+	"image/jpeg"
+	_ "image/jpeg"
+	_ "image/png"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -26,6 +31,12 @@ func main() {
 		}
 		defer infile.Close()
 
+		img, _, err := image.Decode(infile)
+		if err != nil {
+			fmt.Printf("Decode image %s error：%s\n", file.Name(), err)
+			return
+		}
+
 		outFileName := strings.TrimSuffix(file.Name(), filepath.Ext(file.Name())) + ".jpg"
 		outfile, err := os.Create(filepath.Join(outputDir, outFileName))
 		if err != nil {
@@ -33,5 +44,13 @@ func main() {
 			return
 		}
 		defer outfile.Close()
+
+		err = jpeg.Encode(outfile, img, &jpeg.Options{Quality: 100})
+		if err != nil {
+			fmt.Printf("Encode file %s error：%s\n", outFileName, err)
+			return
+		}
+
+		fmt.Printf("Converted successfully %s\n", outFileName)
 	}
 }
