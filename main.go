@@ -30,6 +30,8 @@ func main() {
 			continue
 		}
 
+		fmt.Printf("Processing file %s\n", file.Name())
+
 		infile, err := os.Open(filepath.Join(inputDir, file.Name()))
 		if err != nil {
 			fmt.Printf("Open file %s error：%s\n", file.Name(), err)
@@ -59,4 +61,6 @@ func main() {
 
 		fmt.Printf("Converted successfully %s\n", outFileName)
 	}
+
+	fmt.Println("Completed")
 }
